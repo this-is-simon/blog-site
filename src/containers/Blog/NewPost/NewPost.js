@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import axios from '../../axios';
 import './NewPost.css';
+import axios from '../../../axios'
 
 class NewPost extends Component {
     state = {
@@ -8,6 +8,10 @@ class NewPost extends Component {
         content: '',
         author: 'Max'
     };
+
+    componentDidMount() {
+        console.log(this.props)
+    }
 
     handleAddPost = () => {
         const data = {
