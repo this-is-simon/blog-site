@@ -12,7 +12,7 @@ class Blog extends Component {
                 <header>
                     <nav>
                         <ul>
-                            <li><NavLink exact to="/">Home</NavLink></li>
+                            <li><NavLink exact to="/">Posts</NavLink></li>
                             <li><NavLink to={{
                                 pathname: "/new-post"
                             }}>New Post</NavLink></li>
