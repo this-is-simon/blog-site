@@ -1,62 +1,66 @@
-import React, {Component} from 'react';
-import Post from "../../../components/Post/Post";
-import './Posts.css'
-import axios from "../../../axios";
-import {Link} from "react-router-dom";
+import React, { Component } from 'react';
+import axios from '../../../axios';
+import { Route } from 'react-router-dom';
 
+import Post from '../../../components/Post/Post';
+import './Posts.css';
+import FullPost from '../FullPost/FullPost';
 
 class Posts extends Component {
     state = {
-        posts: [],
-    };
+        posts: []
+    }
 
-    componentDidMount() {
-        console.log(this.props);
-        axios.get('/posts')
-            .then(response => {
-                const posts = response.data.slice(0, 10);
-                const updatedPosts = posts.map(post => {
-                        return {
-                            ...post,
-                            author: 'Simon'
-                        }
+    componentDidMount () {
+        console.log( this.props );
+        axios.get( '/posts' )
+            .then( response => {
+                const posts = response.data.slice( 0, 4 );
+                const updatedPosts = posts.map( post => {
+                    return {
+                        ...post,
+                        author: 'Max'
                     }
-                );
-                this.setState({posts: updatedPosts})
-            })
-            .catch(error => {
-                console.log('Error:', error);
-                this.setState({error: true});
-            });
-    };
+                } );
+                this.setState( { posts: updatedPosts } );
+                // console.log( response );
+            } )
+            .catch( error => {
+                console.log( error );
+                // this.setState({error: true});
+            } );
+    }
 
-    handlePostClicked = (id) => {
-        this.setState({selectedPostId: id})
-    };
+    postSelectedHandler = ( id ) => {
+        // this.props.history.push({pathname: '/posts/' + id});
+        this.props.history.push( '/posts/' + id );
+    }
 
-    render() {
-        let posts = <p style={{textAlign: 'center'}}>Something went wrang.</p>;
-        if (!this.state.error) {
-            posts = this.state.posts.map(post => {
+    render () {
+        let posts = <p style={{ textAlign: 'center' }}>Something went wrong!</p>;
+        if ( !this.state.error ) {
+            posts = this.state.posts.map( post => {
                 return (
-                    <Link to={"/" + post.id} key={post.id}>
-                        <Post
+                    // <Link to={'/posts/' + post.id} key={post.id}>
+                    <Post
+                        key={post.id}
                         title={post.title}
                         author={post.author}
-                        id={post.id}
-                        clicked={() => {this.handlePostClicked(post.id)}}
-                    />
-                    </Link>
-                )
-            });
+                        clicked={() => this.postSelectedHandler( post.id )} />
+                    // </Link>
+                );
+            } );
         }
 
         return (
-            <section className="Posts">
-                {posts}
-            </section>
-        )
+            <div>
+                <section className="Posts">
+                    {posts}
+                </section>
+                <Route path={this.props.match.url + '/:id'} exact component={FullPost} />
+            </div>
+        );
     }
-};
+}
 
 export default Posts;

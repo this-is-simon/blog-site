@@ -1,29 +1,30 @@
 import React, { Component } from 'react';
+import axios from 'axios';
+
 import './NewPost.css';
-import axios from '../../../axios'
 
 class NewPost extends Component {
     state = {
         title: '',
         content: '',
         author: 'Max'
-    };
-
-    componentDidMount() {
-        console.log(this.props)
     }
 
-    handleAddPost = () => {
+    componentDidMount () {
+        console.log(this.props);
+    }
+
+    postDataHandler = () => {
         const data = {
             title: this.state.title,
-            content: this.state.content,
+            body: this.state.content,
             author: this.state.author
         };
         axios.post('/posts', data)
             .then(response => {
-                console.log('ADD post', response)
-            })
-    };
+                console.log(response);
+            });
+    }
 
     render () {
         return (
@@ -38,7 +39,7 @@ class NewPost extends Component {
                     <option value="Max">Max</option>
                     <option value="Manu">Manu</option>
                 </select>
-                <button onClick={this.handleAddPost}>Add Post</button>
+                <button onClick={this.postDataHandler}>Add Post</button>
             </div>
         );
     }
